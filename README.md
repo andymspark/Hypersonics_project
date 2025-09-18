@@ -8,7 +8,7 @@ You can sweep Mach number and nose radius and generate figures.
 > What this is: An undergraduate-friendly starting point that is easy to extend toward CFD.
 > What this is not (yet): A full Navier–Stokes flow solver or chemistry/nonequilibrium model.
 
-## Quick start
+## Quick START
 ```bash
 python cases/M7_blunted_cone/run_case.py
 ```
