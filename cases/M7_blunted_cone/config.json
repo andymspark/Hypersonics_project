@@ -1,0 +1,24 @@
+{
+  "case_name": "M7_blunted_cone",
+  "free_stream": {
+    "T_inf_K": 220.0,
+    "p_inf_Pa": 1200.0,
+    "M_list": [
+      6.0,
+      7.0,
+      8.0,
+      9.0,
+      10.0
+    ],
+    "gamma": 1.4,
+    "R_air": 287.05
+  },
+  "body": {
+    "Rn_list_m": [
+      0.005,
+      0.01,
+      0.02
+    ],
+    "T_wall_K": 300.0
+  }
+}
