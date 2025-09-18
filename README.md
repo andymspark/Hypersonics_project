@@ -1,5 +1,5 @@
 
-# Hypersonics: Blunt-Body Heating — Correlations vs CFD (starter kit)
+# Hypersonics: Blunt-Body Heating — Correlations vs CFD
 
 This repo gives you a ready-to-run scaffold to compare classic hypersonic heating correlations
 — Sutton–Graves and Fay–Riddell (laminar stagnation) — under perfect-gas air assumptions.

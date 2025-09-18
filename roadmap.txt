@@ -1,0 +1,48 @@
+Study Plan: AUSMPW+ Scheme Mastery
+
+1. Governing Equations (Compressible Euler/Navier–Stokes)
+- Formulate the one-dimensional Euler system in conservative form and study the flux Jacobian eigenstructure (characteristic speeds u−a, u, u+a).
+- Master transformations between primitive and conservative variables, the ideal-gas closure, and the speed of sound a = sqrt(gamma * p / rho).
+- Establish a consistent nondimensionalization (particularly useful for hypersonic regimes) and adopt a baseline gamma (e.g., 1.4).
+- Note hypersonic features—strong shocks, large thermodynamic jumps—and the resulting need for shock-robust numerical fluxes.
+
+2. Spatial–Temporal Discretization Backbone
+- Implement a finite-volume method on a 1-D uniform grid (extend to 2-D after validation).
+- Use a strong-stability-preserving Runge–Kutta integrator (TVD-RK2 or RK3) with appropriate CFL control.
+- Begin with first-order (piecewise-constant) reconstruction; then add MUSCL with limiters (minmod, van Leer, MC).
+- Keep this backbone modular so that only the interface flux is swapped when comparing Riemann solvers.
+
+3. Foundational Riemann Fluxes (for Intuition and Baselines)
+- Rusanov/LLF: highly diffusive, very robust—use as a sanity baseline.
+- HLL/HLLC: captures contact and shear (HLLC), providing sharper discontinuities than LLF.
+- Roe (FDS): crisp shocks but requires an entropy fix and is susceptible to multi-D carbuncle unless stabilized.
+
+4. AUSM Family: Rationale and Architecture
+- Understand the AUSM philosophy: split the numerical flux into
+  (i) a convective part governed by a split Mach number (M-splitting), and
+  (ii) an acoustic/pressure part via pressure splitting (p-splitting).
+- This separation yields sharp contact resolution and improved shock stability compared to many all-in-one fluxes.
+
+Progression within AUSM
+- AUSM → AUSM+: refined polynomial split functions for subsonic |M| ≤ 1 and proper upwinding for supersonic |M| > 1; improved pressure–velocity coupling near M ≈ 0–1.
+- AUSMPW: introduces Pressure Weighting (PW) to mitigate shock instabilities (carbuncle/odd–even decoupling) by upwind-biasing the pressure flux inside shocks.
+- AUSMPW+: further tunes PW and the velocity/pressure split; adds targeted pressure diffusion and shock sensors to maintain sharp contacts while suppressing carbuncle and post-shock oscillations—robust for high-Mach applications.
+
+5. Validation Exercises (Same Code, Swap the Flux)
+- E1: Sod shock tube → LLF → HLLC → Roe → AUSM+ → AUSMPW+. Compare shock and contact sharpness and detect spurious oscillations.
+- E2: Lax/Liu shock tube (stronger shock). Monitor overshoots and stability.
+- E3: Moving contact with near-equal pressures—tests pure contact preservation.
+- E4: 2-D M=3 flow past a cylinder or blunt cone (Euler): demonstrate Roe carbuncle tendencies and AUSMPW+ mitigation.
+- E5: Grid refinement & limiter sweep: verify L1 convergence in smooth regions and measure shock thickness and contact steepness.
+
+Targeted Advice / Small Tweaks
+- Define quantitative success criteria early: e.g., L1 errors for smooth tests, overshoot magnitude near shocks, cells across shocks/contacts, and wall pressure error in 2-D cases.
+- Keep sensors local and simple: pressure-ratio or density-ratio based shock sensors suffice for AUSMPW+; avoid global switching.
+- Limiter discipline: start with minmod (safe) → MC (sharper). Over-aggressive limiting will smear contacts; too lenient will ring.
+- CFL ramp: begin conservative (e.g., 0.3 with MUSCL+RK2) and raise only after each flux passes all 1-D tests.
+- Entropy fixes vs PW: don’t stack multiple unrelated fixes (e.g., Roe entropy fix + heavy PW) unless there is a measured pathology that requires it.
+- Viscous extension: when moving to Navier–Stokes, compute viscous fluxes with central gradients and account for the additional diffusive time-step constraint.
+
+Optional Extensions
+- All-speed contrast: briefly examine AUSM+-up or preconditioning to understand why AUSMPW+ targets compressible/high-Mach flows best.
+- Stiff thermochemistry placeholder: note where flux splitting and shock sensors would interact with source-term stiffness in hypersonic chemistry.
