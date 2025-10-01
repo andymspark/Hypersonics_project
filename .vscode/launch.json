@@ -1,17 +1,15 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "C/C++: cl.exe build and debug active file",
-            "type": "cppvsdbg",
-            "request": "launch",
-            "program": "${fileDirname}\\${fileBasenameNoExtension}.exe",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${fileDirname}",
-            "environment": [],
-            "console": "externalTerminal",
-            "preLaunchTask": "C/C++: cl.exe build active file"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run app (CMake Debug)",
+      "type": "cppvsdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/build/Debug/your_executable.exe",
+      "args": ["../config.yaml"],
+      "cwd": "${workspaceFolder}",
+      "preLaunchTask": "CMake: configure+build (MSVC)"
+    }
+  ]
 }
+    
