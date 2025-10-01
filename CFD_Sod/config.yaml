@@ -1,0 +1,7 @@
+problem:
+  nx: 10
+  final_time: 0.2
+
+scheme:
+  name: "lax_friedrichs"
+  cfl: 0.8
